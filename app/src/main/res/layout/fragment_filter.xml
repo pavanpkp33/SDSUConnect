@@ -1,0 +1,77 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/border"
+    tools:context="cs646.edu.sdsu.cs.connectemallTab.fragments.FilterFragment"
+    android:id="@+id/filterFrame">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/filterLayout">
+
+        <Spinner
+            android:layout_width="200dp"
+            android:layout_marginStart="22dp"
+            android:id="@+id/spFilterState"
+            android:layout_alignTop="@+id/spFilterCountry"
+            android:layout_toEndOf="@+id/spFilterCountry"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:layout_alignTop="@+id/spFilterState"
+            android:layout_toEndOf="@+id/spFilterState"
+            android:layout_marginStart="20dp"
+            android:id="@+id/etFilterYear"
+            tools:ignore="LabelFor"
+            android:hint="@string/_1970" />
+
+        <Button
+            android:text="@string/apply_filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/etFilterYear"
+            android:layout_toEndOf="@+id/etFilterYear"
+            android:layout_marginStart="30dp"
+            android:id="@+id/btnApplyFilter"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:textColor="@android:color/background_light" />
+
+        <Button
+            android:text="@string/clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/btnApplyFilter"
+            android:layout_toEndOf="@+id/btnApplyFilter"
+            android:layout_marginStart="22dp"
+            android:id="@+id/btnClearFilter"
+            android:backgroundTint="@color/colorAccent"
+            android:textColor="@android:color/background_light" />
+
+        <Spinner
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:id="@+id/spFilterCountry"
+            android:layout_width="200dp"
+            android:layout_below="@+id/tvFilterHeader"
+            android:layout_alignStart="@+id/tvFilterHeader" />
+
+        <TextView
+            android:text="@string/filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="21dp"
+            android:id="@+id/tvFilterHeader"
+            android:textSize="14sp"
+            android:textColor="@android:color/background_dark"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true" />
+    </RelativeLayout>
+</FrameLayout>

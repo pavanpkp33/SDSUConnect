@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="cs646.edu.sdsu.cs.connectemallTab.activities.MainActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/loginLayout"
+        android:background="@android:color/background_light">
+    <TextView
+        android:text="@string/connect_em_all"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp"
+        android:id="@+id/tvLoginHeader"
+        android:textSize="42sp"
+        android:textColor="@color/colorPrimaryDark" />
+
+    <TextView
+        android:text="@string/sign_in_or_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvLoginHeader"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:id="@+id/tvLoginMenu"
+        android:textSize="28sp"
+        android:textColor="@color/colorPrimary" />
+
+    <EditText
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:ems="10"
+        android:layout_below="@+id/tvLoginMenu"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="62dp"
+        android:id="@+id/etLoginEmailId"
+        android:textSize="24sp"
+        android:hint="@string/email_id"
+        android:layout_width="400dp" />
+
+    <EditText
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/etLoginPassword"
+        android:layout_centerVertical="true"
+        android:layout_alignStart="@+id/etLoginEmailId"
+        android:hint="@string/password"
+        android:textSize="24sp" />
+
+    <Button
+        android:text="@string/login"
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etLoginPassword"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="23dp"
+        android:id="@+id/btnLogin"
+        android:textSize="18sp"
+        android:background="@color/colorAccent"
+        android:textColor="@android:color/background_light" />
+
+    <TextView
+        android:text="@string/dont_have_an_account_create_one"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnLogin"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:id="@+id/tvNoId"
+        android:textSize="18sp" />
+
+    <Button
+        android:text="@string/register"
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvNoId"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="17dp"
+        android:id="@+id/btnRegister"
+        android:background="@color/colorAccent"
+        android:textSize="18sp"
+        android:textColor="@android:color/background_light" />
+
+
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/loaderLayout"
+        android:background="@android:color/background_light"
+        android:visibility="gone">
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/pgLogin" />
+
+        <TextView
+            android:text="@string/please_wait_signing_in"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="240dp"
+            android:id="@+id/tvLoggingIn"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18sp" />
+    </RelativeLayout>
+</RelativeLayout>

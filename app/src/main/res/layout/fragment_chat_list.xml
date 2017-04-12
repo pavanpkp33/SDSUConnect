@@ -1,0 +1,39 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="cs646.edu.sdsu.cs.connectemallTab.fragments.ChatListFragment"
+    android:id="@+id/parentLayout"
+    android:background="@drawable/border">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/chatHeader"
+        android:background="@color/colorAccent"
+        android:gravity="center_vertical|center_horizontal|center"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp">
+
+        <TextView
+            android:text="@string/chats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvChatHeader"
+            android:textSize="18sp"
+            android:textColor="@android:color/background_light"
+            android:gravity="center" />
+    </LinearLayout>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/chatHeader"
+        android:id="@+id/lvChatList" />
+</RelativeLayout>

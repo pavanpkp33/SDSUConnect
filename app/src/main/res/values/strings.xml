@@ -1,0 +1,65 @@
+<resources>
+    <string name="app_name">Connect EM All</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_main">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="sign_in_or_register">Sign In or Register</string>
+    <string name="nick_name">SDSU Card</string>
+    <string name="connect_em_all">Connect EM All</string>
+    <string name="password">Password</string>
+    <string name="email_id">Email ID</string>
+    <string name="login">Log In</string>
+    <string name="dont_have_an_account_create_one">Dont have an account? Create one!</string>
+    <string name="register">REGISTER</string>
+    <string name="please_wait_signing_in">Please wait.. Signing in..</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="enter_your_e_mail_id">Enter your E-mail ID</string>
+    <string name="user_registration">USER REGISTRATION</string>
+    <string name="john_doe_xyz_com">john.doe@xyz.com</string>
+    <string name="enter_user_name">Enter User name</string>
+    <string name="john">John</string>
+    <string name="enter_your_password">Enter your Password</string>
+    <string name="re_enter_your_password">Re-enter your Password</string>
+    <string name="abc123">abc123</string>
+    <string name="enter_your_year_of_joining_sdsu">Enter your year of joining SDSU</string>
+    <string name="_1970">1970</string>
+    <string name="select_a_country">Select a Country</string>
+    <string name="select_a_state">Select a State</string>
+    <string name="enter_your_city">Enter your city</string>
+    <string name="san_diego">San Diego</string>
+    <string name="set_lat_lng_of_city">SET LAT / LNG OF CITY</string>
+    <string name="register_user">REGISTER USER</string>
+    <string name="set_latitude_longitude">Set Latitude / Longitude</string>
+    <string name="conacting_server_please_wait">Contacting server.. Please wait!</string>
+    <string name="title_activity_user_home">UserHomeActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="android_studio">Android Studio</string>
+    <string name="filter">Filter by Country, State, and Year</string>
+    <string name="apply_filter">Apply Filter</string>
+    <string name="clear">Clear</string>
+    <string name="scroll_down_to_load_more_users">Scroll down to load more users.</string>
+    <string name="map_view">Map View</string>
+    <string name="list_view">List View</string>
+    <string name="load_more_users">Load More Users</string>
+    <string name="reload_list">Reload list</string>
+    <string name="chats">Chats</string>
+    <string name="enter_message_and_hit_send">Enter message and hit send!</string>
+</resources>

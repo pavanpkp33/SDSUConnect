@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "249975556724",
+    "firebase_url": "https://connectemall-a6afb.firebaseio.com",
+    "project_id": "connectemall-a6afb",
+    "storage_bucket": "connectemall-a6afb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:249975556724:android:d75737096f35e7cb",
+        "android_client_info": {
+          "package_name": "cs646.edu.sdsu.cs.connectemallTab"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "249975556724-f3fg2daf12onqihvvfjst777et4n5p2d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "cs646.edu.sdsu.cs.connectemallTab",
+            "certificate_hash": "d473cee956dc588d1181aa6b8c1e82fd237ac970"
+          }
+        },
+        {
+          "client_id": "249975556724-hbkk578vc8kq4ku41unipnf9v3hchci9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHPvKtAn3jRHFFXD68eY-r0dwNUd329q4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "249975556724-hbkk578vc8kq4ku41unipnf9v3hchci9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

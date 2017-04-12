@@ -1,0 +1,225 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="cs646.edu.sdsu.cs.connectemallTab.fragments.UserRegistrationFrag"
+    android:id="@+id/layoutRegPage">
+
+    <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/userFragLayout"
+        >
+    <TextView
+        android:text="@string/user_registration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="29dp"
+        android:id="@+id/tvUserHeader"
+        android:textSize="24sp"
+        android:textColor="@color/colorPrimaryDark"
+        android:textStyle="normal|bold" />
+
+        <EditText
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:ems="10"
+            android:layout_marginTop="17dp"
+            android:id="@+id/etEmailId"
+            android:layout_width="350dp"
+            android:hint="@string/john_doe_xyz_com"
+            android:textSize="24sp"
+            android:layout_below="@+id/tvEmailInst"
+            android:layout_alignStart="@+id/tvEmailInst"
+            android:nextFocusRight="@+id/etUserName"
+            android:imeOptions="actionNext"/>
+
+    <EditText
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:layout_alignTop="@+id/etEmailId"
+        android:layout_toEndOf="@+id/etEmailId"
+        android:layout_marginStart="144dp"
+        android:id="@+id/etUserName"
+        android:nextFocusForward="@+id/etPassword"
+        android:imeOptions="actionNext"
+        android:textSize="24sp"
+        android:hint="@string/john" />
+
+    <TextView
+        android:text="@string/enter_user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/tvEmailInst"
+        android:layout_alignStart="@+id/etUserName"
+        android:id="@+id/tvNickNameInst" />
+
+
+
+    <TextView
+        android:text="@string/enter_your_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etEmailId"
+        android:layout_alignStart="@+id/etEmailId"
+        android:layout_marginTop="18dp"
+        android:id="@+id/tvPasswordInst" />
+
+    <EditText
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:layout_below="@+id/tvPasswordInst"
+        android:layout_alignStart="@+id/tvPasswordInst"
+        android:layout_marginTop="21dp"
+        android:nextFocusRight="@+id/etYear"
+        android:imeOptions="actionNext"
+        android:id="@+id/etPassword"
+        android:hint="@string/abc123"
+        android:textSize="24sp" />
+
+    <TextView
+        android:text="@string/enter_your_year_of_joining_sdsu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/etPassword"
+        android:layout_alignStart="@+id/etUserName"
+        android:id="@+id/tvYearInst" />
+
+    <EditText
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:layout_alignBottom="@+id/etPassword"
+        android:layout_alignStart="@+id/tvYearInst"
+        android:id="@+id/etYear"
+        android:nextFocusForward="@+id/etCity"
+        android:imeOptions="actionNext"
+        android:hint="@string/_1970"
+        android:maxLength="4"
+        android:textSize="24sp"
+        android:inputType="number" />
+
+    <TextView
+        android:text="@string/enter_your_e_mail_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="48dp"
+        android:id="@+id/tvEmailInst"
+        android:layout_below="@+id/tvUserHeader"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="@string/select_a_country"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etPassword"
+        android:layout_alignStart="@+id/etPassword"
+        android:layout_marginTop="26dp"
+        android:id="@+id/tvSpCountryInst" />
+
+    <Spinner
+        android:layout_width="350dp"
+        android:layout_below="@+id/tvSpCountryInst"
+        android:layout_alignStart="@+id/tvSpCountryInst"
+        android:layout_marginTop="21dp"
+        android:id="@+id/spCountry"
+        android:layout_height="40dp" />
+
+    <TextView
+        android:text="@string/select_a_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/tvSpCountryInst"
+        android:layout_alignStart="@+id/etYear"
+        android:id="@+id/tvSpStateInst" />
+
+    <Spinner
+        android:layout_width="350dp"
+        android:layout_height="40dp"
+        android:id="@+id/spState"
+        android:layout_alignTop="@+id/spCountry"
+        android:layout_alignStart="@+id/tvSpStateInst" />
+
+    <TextView
+        android:text="@string/enter_your_city"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spCountry"
+        android:layout_alignStart="@+id/spCountry"
+        android:layout_marginTop="24dp"
+        android:id="@+id/tvCityInst" />
+
+    <EditText
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName|textCapWords"
+        android:ems="10"
+        android:layout_below="@+id/tvCityInst"
+        android:layout_alignStart="@+id/tvCityInst"
+        android:layout_marginTop="18dp"
+        android:id="@+id/etCity"
+        android:imeOptions="actionDone"
+        android:hint="@string/san_diego" />
+
+    <Button
+        android:text="@string/set_lat_lng_of_city"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/etCity"
+        android:layout_alignStart="@+id/spState"
+        android:id="@+id/btnSetLatLng"
+        android:textSize="18sp"
+        android:textColor="@android:color/background_light"
+        android:backgroundTint="@color/colorPrimaryDark" />
+
+    <Button
+        android:text="@string/register_user"
+        android:layout_width="350dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="22dp"
+        android:id="@+id/btnSave"
+        android:textColor="@android:color/background_light"
+        android:textSize="18sp"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/loaderUserFrag"
+        android:visibility="gone"
+        android:background="@android:color/background_light">
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="229dp"
+            android:id="@+id/pgUser" />
+
+        <TextView
+            android:text="@string/conacting_server_please_wait"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/tvUserPgText"
+            android:textSize="18sp"
+            android:textColor="@color/colorPrimaryDark" />
+    </RelativeLayout>
+</RelativeLayout>

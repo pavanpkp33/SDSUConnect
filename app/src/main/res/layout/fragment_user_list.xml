@@ -1,0 +1,64 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/border"
+    tools:context="cs646.edu.sdsu.cs.connectemallTab.fragments.UserListFragment"
+    android:id="@+id/listViewFrag">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:padding="1dp"
+        android:id="@+id/listFragTop">
+
+        <Button
+            android:text="@string/map_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnMapView"
+            android:layout_marginEnd="12dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:textColor="@android:color/background_light"
+            android:backgroundTint="@color/colorAccent" />
+
+        <TextView
+            android:text="@string/scroll_down_to_load_more_users"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvListViewHeader"
+            android:textSize="12sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true" />
+
+        <Button
+            android:text="@string/reload_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toStartOf="@+id/btnMapView"
+            android:layout_marginEnd="11dp"
+            android:id="@+id/btnRefreshList"
+            android:textColor="@android:color/background_light"
+            android:backgroundTint="@color/colorAccent" />
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/listFragTop"
+        android:layout_alignParentStart="true"
+        android:id="@+id/listViewFrame">
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/userListView" />
+    </FrameLayout>
+</RelativeLayout>

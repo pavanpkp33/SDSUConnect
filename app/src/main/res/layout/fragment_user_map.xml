@@ -1,0 +1,54 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/border"
+    tools:context="cs646.edu.sdsu.cs.connectemallTab.fragments.UserListFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:padding="1dp"
+        android:id="@+id/mapFragTop">
+
+        <Button
+            android:text="@string/list_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnListView"
+            android:layout_marginEnd="11dp"
+            android:layout_alignParentTop="true"
+            android:layout_toStartOf="@+id/btnLoadMore"
+            android:textColor="@android:color/background_light"
+            android:backgroundTint="@color/colorAccent" />
+
+        <Button
+            android:text="@string/load_more_users"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:id="@+id/btnLoadMore"
+            android:textColor="@android:color/background_light"
+            android:backgroundTint="@color/colorAccent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/mapViewFrame"
+        android:layout_below="@+id/mapFragTop"
+        android:layout_alignParentStart="true">
+
+        <com.google.android.gms.maps.MapView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/userMapView" />
+    </FrameLayout>
+</RelativeLayout>

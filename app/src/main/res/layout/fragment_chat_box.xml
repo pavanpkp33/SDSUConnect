@@ -1,0 +1,93 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="cs646.edu.sdsu.cs.connectemallTab.fragments.ChatBoxFragment"
+    android:id="@+id/parentChatBox"
+    android:background="@drawable/border">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/chatBoxHeader"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:background="@color/colorPrimary"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+
+        <Button
+            android:layout_height="40dp"
+            android:id="@+id/btnChatBack"
+            android:background="@drawable/ic_keyboard_arrow_left_white_24px"
+            android:layout_width="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/chatBody"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+
+        <ListView
+            android:layout_width="match_parent"
+            android:divider="#00000000"
+            android:id="@+id/lvChatBox"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="50dp"
+            android:layout_height="400dp"
+            android:layout_above="@+id/chatBoxLayout" />
+
+        <RelativeLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:id="@+id/chatBoxLayout"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_height="80dp">
+
+            <android.support.design.widget.FloatingActionButton
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                app:fabSize="normal"
+                app:srcCompat="@android:drawable/ic_menu_send"
+                android:id="@+id/btnSend"
+                app:rippleColor="@android:color/darker_gray"
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                app:elevation="9dp" />
+
+            <EditText
+                android:layout_height="match_parent"
+                android:inputType="textMultiLine"
+                android:ems="10"
+                android:id="@+id/etChatBox"
+                android:hint="@string/enter_message_and_hit_send"
+                android:textSize="22sp"
+                android:layout_width="400dp"
+                android:layout_alignTop="@+id/btnSend"
+                android:layout_alignParentStart="true" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvChatboxTitle"
+            android:textSize="20sp"
+            android:textColor="@android:color/background_light"
+            android:layout_marginTop="11dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
+
+
+    </RelativeLayout>
+</RelativeLayout>
