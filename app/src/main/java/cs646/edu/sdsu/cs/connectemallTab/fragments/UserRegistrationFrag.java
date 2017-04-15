@@ -405,7 +405,7 @@ public class UserRegistrationFrag extends Fragment implements AdapterView.OnItem
                     public void onComplete(@NonNull Task<Void> task) {
                         progressDialog.dismiss();
                         if (task.isSuccessful()) {
-                            Toast.makeText(getContext(), "User registration successfull! Redirecting..", Toast.LENGTH_SHORT)
+                            Toast.makeText(getContext(), "User registration successful! Redirecting..", Toast.LENGTH_SHORT)
                                     .show();
                             Intent intent = new Intent(getActivity(), UserHomeActivity.class);
                             instance.finish();

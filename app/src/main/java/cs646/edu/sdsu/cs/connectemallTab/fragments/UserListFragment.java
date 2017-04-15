@@ -14,20 +14,11 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
+import android.widget.ListView;
+
 import com.google.firebase.auth.FirebaseAuth;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -89,10 +80,9 @@ public class UserListFragment extends Fragment implements AbsListView.OnScrollLi
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        System.out.println("On Activity Created called!");
-        userList = new ArrayList<Users>();
-        progressDialog.setMessage("Populating list.. Please wait!");
-        progressDialog.show();
+
+        userList = new ArrayList<>();
+
         if(!parentInstance.isFILTER_SET()){
             parentInstance.getNextId();
         }
@@ -103,8 +93,8 @@ public class UserListFragment extends Fragment implements AbsListView.OnScrollLi
         userListView.setOnScrollListener(this);
         userListView.setOnItemClickListener(this);
 
-     userAdapter.notifyDataSetChanged();
-        progressDialog.dismiss();
+        userAdapter.notifyDataSetChanged();
+
     }
 
     @Override
@@ -140,6 +130,8 @@ public class UserListFragment extends Fragment implements AbsListView.OnScrollLi
                         && userListView.getChildAt(userListView.getChildCount() - 1).getBottom() <= userListView.getHeight()) {
                     int lastId = parentInstance.getDataSource().get(totalItemCount-1).getId();
                     //  parentInstance.getDataFromServer(lastId, lastId-100);
+                    String message = "Loading more users..";
+                    parentInstance.displaySnack(message);
                     if(!parentInstance.isFILTER_SET()){
                         Cursor c = parentInstance.checkLocalDB(lastId, lastId-100);
                         if(c.moveToFirst()){
@@ -180,10 +172,13 @@ public class UserListFragment extends Fragment implements AbsListView.OnScrollLi
 
         switch (v.getId()){
             case R.id.btnRefreshList:
-                Toast.makeText(getContext(), "Refreshing List", Toast.LENGTH_SHORT).show();
+                parentInstance.displaySnack("Reloading List...");
                 parentInstance.getDataSource().clear();
+                parentInstance.setFILTER_SET(false);
                 FragmentManager manager = getFragmentManager();
                 UserListFragment fragment = (UserListFragment) manager.findFragmentByTag("LIST");
+                FilterFragment filFrag = (FilterFragment) manager.findFragmentByTag("FILTER");
+                filFrag.resetFilter();
                 onActivityCreated(null);
 
                 break;

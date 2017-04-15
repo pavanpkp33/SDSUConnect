@@ -63,6 +63,10 @@ public class UserHomeActivity extends AppCompatActivity
     public boolean FILTER_SET = false;
     private ArrayList<Users> dataSource = new ArrayList<>();
     private FirebaseDatabase database;
+    double filterLatitude = 0, filterLongitude = 0;
+    int zoomLevel = 1;
+
+    ProgressDialog progressDialog;
 
     SharedPreferences sharedPref;
     DatabaseReference dbRef, chatRef;
@@ -86,7 +90,7 @@ public class UserHomeActivity extends AppCompatActivity
         }
 
         setContentView(R.layout.activity_user_home);
-
+        progressDialog = new ProgressDialog(this);
         dbHelper = new DataHelper(getApplicationContext());
         try{
             dbHelper.openConnetion();
@@ -139,6 +143,7 @@ public class UserHomeActivity extends AppCompatActivity
     }
 
     private void reloadList(int nId) {
+
         dataSource.clear();
         int maxId =0, updateCount = 0;
        //get the max id and compare it with server next id. Get records if less than 100.
@@ -207,7 +212,7 @@ public class UserHomeActivity extends AppCompatActivity
                         UserMapFragment mapFrag = (UserMapFragment) manager.findFragmentByTag("MAP");
                         mapFrag.getIntialData();
                     }
-
+                    progressDialog.dismiss();
                 }catch (JSONException e){
                     e.printStackTrace();
                 }
@@ -268,6 +273,8 @@ public class UserHomeActivity extends AppCompatActivity
     }
 
     public void getNextId() {
+        progressDialog.setMessage("Fetching data..");
+        progressDialog.show();
         RequestQueue requestQueueObj= VolleyHandler.getInstance().getReqQueue();
         String url= Constants.NEXT_ID;
 
@@ -397,7 +404,7 @@ public class UserHomeActivity extends AppCompatActivity
 
     public void checkUserExisits(final String user1, final String user2, final String chatId) {
 
-        System.out.println("CHAT ID: "+ chatId);
+
 
         dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -455,5 +462,32 @@ public class UserHomeActivity extends AppCompatActivity
         return dbHelper;
     }
 
+    public double getFilterLatitude() {
+        return filterLatitude;
+    }
 
+    public void setFilterLatitude(double filterLatitude) {
+        this.filterLatitude = filterLatitude;
+    }
+
+    public double getFilterLongitude() {
+        return filterLongitude;
+    }
+
+    public void setFilterLongitude(double filterLongitude) {
+        this.filterLongitude = filterLongitude;
+    }
+
+    public int getZoomLevel() {
+        return zoomLevel;
+    }
+
+    public void setZoomLevel(int zoomLevel) {
+        this.zoomLevel = zoomLevel;
+    }
+
+    public void displaySnack(String message){
+        Snackbar.make(findViewById(android.R.id.content), message , Snackbar.LENGTH_SHORT)
+                .show();
+    }
 }

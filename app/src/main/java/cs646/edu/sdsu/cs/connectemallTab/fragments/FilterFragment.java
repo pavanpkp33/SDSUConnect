@@ -4,6 +4,8 @@ package cs646.edu.sdsu.cs.connectemallTab.fragments;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,6 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -30,6 +33,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import cs646.edu.sdsu.cs.connectemallTab.R;
@@ -179,23 +186,35 @@ public class FilterFragment extends Fragment implements AdapterView.OnItemSelect
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btnApplyFilter:
-                InputMethodManager imm = (InputMethodManager) parentInstance.getSystemService(getContext().INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                URL_FILTER = Constants.BASE_URL_USERS_REVERSE;
-                filterData();
+                if(spCountry.getSelectedItem().toString().contains("None") &&
+                        spState.getSelectedItem().toString().contains("None") &&
+                        etYear.getText().toString().isEmpty())
+                {
+                    parentInstance.displaySnack("Please select atleast one filter value");
+
+
+                }else
+                {
+                    InputMethodManager imm = (InputMethodManager) parentInstance.getSystemService(getContext().INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                    URL_FILTER = Constants.BASE_URL_USERS_REVERSE;
+                    filterData();
+                }
+
                 break;
             case R.id.btnClearFilter:
                 resetFilter();
         }
     }
 
-    private void resetFilter() {
+    public void resetFilter() {
 
         parentInstance.setFILTER_SET(false);
-        parentInstance.getNextId();
+       parentInstance.getDataSource().clear();
         page = 0;
         URL_FILTER = Constants.BASE_URL_USERS_REVERSE;
         QUERY_STRING = "";
+        parentInstance.getNextId();
         etYear.setText("");
         spCountry.setSelection(0, false);
         spState.setSelection(0, false);
@@ -204,20 +223,17 @@ public class FilterFragment extends Fragment implements AdapterView.OnItemSelect
     private void filterData() {
 
         parentInstance.setFILTER_SET(true);
+
+        if(!spState.getSelectedItem().toString().contains("None")){
+            setZoomLevel(selectedState+", "+selectedCountry);
+            parentInstance.setZoomLevel(6);
+
+        }else if(!spCountry.getSelectedItem().toString().contains("None")){
+            setZoomLevel(selectedCountry);
+            parentInstance.setZoomLevel(4);
+        }
         getNextId();
-//        if(!spState.getSelectedItem().toString().contains("None")){
-//            setZoomLevel(selectedState+", "+selectedCountry);
-//            parentInstance.setZoomLeve(6);
-//
-//        }else if(!spCountry.getSelectedItem().toString().contains("None")){
-//            setZoomLevel(selectedCountry);
-//            parentInstance.setZoomLeve(4);
-//        }
-//        FragmentManager fMg = getFragmentManager();
-//        FragmentTransaction fMgt = fMg.beginTransaction();
-//        UserListFragment userList = new UserListFragment();
-//        fMgt.replace(R.id.userDetailsContainer, userList, "LIST");
-//        fMgt.commit();
+
 
     }
 
@@ -261,7 +277,11 @@ public class FilterFragment extends Fragment implements AdapterView.OnItemSelect
             isCountryApplied = true;
         }
         if(!spState.getSelectedItem().toString().contains("None")){
-            URL_FILTER += "&state="+selectedState;
+            try {
+                URL_FILTER += "&state="+URLEncoder.encode(selectedState, "utf-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
             QUERY_STRING = "SELECT * FROM USERS WHERE ID < "+nextId+" AND country = '"+selectedCountry+"' AND country = '"+selectedState+"' ORDER BY ID DESC LIMIT 100";
             QUERY_STRING_SCROLL = "SELECT * FROM USERS WHERE ID < ? AND country = '"+selectedCountry+"' AND country = '"+selectedState+"' ORDER BY ID DESC LIMIT 100";
         }
@@ -329,15 +349,13 @@ public class FilterFragment extends Fragment implements AdapterView.OnItemSelect
         }
        int updateCount = (nextId-1) - maxId;
         if(updateCount > 0){
-            //set filter flag if yes on scroll bere methods by incrementing page and downloading data
-            // illandre same methods conti nue maadi  ade 100 100
-            //Do not increment page here reset filiter flag in clear and on create view
+
             getFilteredDataFromServer();
         }else{
            Cursor dbCursor = checkLocalDB();
-
-            if(dbCursor.getCount() == 100){
-                // put to array list
+            try{
+                if(dbCursor.getCount() == 100){
+                    // put to array list
 
                     while(dbCursor.moveToNext()){
                         Users userObj = new Users();
@@ -354,10 +372,14 @@ public class FilterFragment extends Fragment implements AdapterView.OnItemSelect
 
                     }
 
-                refreshFragments();
-            }else{
-                getFilteredDataFromServer();
+                    refreshFragments();
+                }else{
+                    getFilteredDataFromServer();
+                }
+            }catch (Exception e){
+                e.printStackTrace();
             }
+
         }
 
     }
@@ -489,7 +511,11 @@ public class FilterFragment extends Fragment implements AdapterView.OnItemSelect
             isCountryApplied = true;
         }
         if(!spState.getSelectedItem().toString().contains("None")){
-            URL_FILTER += "&state="+selectedState;
+            try {
+                URL_FILTER += "&state="+ URLEncoder.encode(selectedState, "utf-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
 
             QUERY_STRING_SCROLL = "SELECT * FROM USERS WHERE ID < ? AND country = '"+selectedCountry+"' AND country = '"+selectedState+"' ORDER BY ID DESC LIMIT 100";
         }
@@ -516,5 +542,22 @@ public class FilterFragment extends Fragment implements AdapterView.OnItemSelect
     public Cursor checkLocalDBScroll(int lastId){
         String [] arr = {Integer.toString(lastId)};
         return parentInstance.getDbHelper().select(QUERY_STRING_SCROLL, arr );
+    }
+
+    private void setZoomLevel(String value) {
+
+        Geocoder geoLocator = new Geocoder(getContext());
+        try {
+            ArrayList<Address> addressList = (ArrayList<Address>) geoLocator.getFromLocationName( value,1);
+            for(Address c : addressList){
+                if(c.hasLatitude() && c.hasLongitude()){
+                    parentInstance.setFilterLatitude(c.getLatitude());
+                    parentInstance.setFilterLongitude(c.getLongitude());
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }
