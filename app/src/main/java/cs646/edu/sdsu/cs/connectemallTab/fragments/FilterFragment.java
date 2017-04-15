@@ -198,6 +198,7 @@ public class FilterFragment extends Fragment implements AdapterView.OnItemSelect
                     InputMethodManager imm = (InputMethodManager) parentInstance.getSystemService(getContext().INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                     URL_FILTER = Constants.BASE_URL_USERS_REVERSE;
+                    page = 0;
                     filterData();
                 }
 
@@ -210,7 +211,7 @@ public class FilterFragment extends Fragment implements AdapterView.OnItemSelect
     public void resetFilter() {
 
         parentInstance.setFILTER_SET(false);
-       parentInstance.getDataSource().clear();
+        parentInstance.getDataSource().clear();
         page = 0;
         URL_FILTER = Constants.BASE_URL_USERS_REVERSE;
         QUERY_STRING = "";
@@ -266,7 +267,7 @@ public class FilterFragment extends Fragment implements AdapterView.OnItemSelect
 
     }
 
-    private String buildURL() {
+    private String  buildURL() {
         boolean isCountryApplied = false;
 
         URL_FILTER+= "&page="+page+"&pagesize="+pageSize+"&beforeid="+nextId;

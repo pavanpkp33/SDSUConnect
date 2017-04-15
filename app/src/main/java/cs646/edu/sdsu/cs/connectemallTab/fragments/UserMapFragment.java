@@ -90,12 +90,10 @@ public class UserMapFragment extends Fragment implements View.OnClickListener , 
                     .target(new LatLng(parentInstance.getFilterLatitude(), parentInstance.getFilterLongitude())).zoom(parentInstance.getZoomLevel()).build();
             gMaps.animateCamera(CameraUpdateFactory
                     .newCameraPosition(cameraPosition));
-            parentInstance.setZoomLevel(1);
-            parentInstance.setFilterLongitude(0);
-            parentInstance.setFilterLatitude(0);
+
         }else{
             CameraPosition cameraPosition = new CameraPosition.Builder()
-                    .target(new LatLng(parentInstance.getFilterLatitude(), parentInstance.getFilterLongitude())).zoom(parentInstance.getZoomLevel()).build();
+                    .target(new LatLng(0,0)).zoom(1).build();
             gMaps.animateCamera(CameraUpdateFactory
                     .newCameraPosition(cameraPosition));
         }
