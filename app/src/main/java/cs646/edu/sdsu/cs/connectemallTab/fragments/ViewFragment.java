@@ -38,7 +38,7 @@ public class ViewFragment extends Fragment {
         ChatListFragment cListFrag = new ChatListFragment();
         ChatBoxFragment cBoxFrag = new ChatBoxFragment();
         UserListFragment uListFrag = new UserListFragment();
-        fmgT.replace(R.id.filterContainer, filterFrag);
+        fmgT.replace(R.id.filterContainer, filterFrag, "FILTER");
         fmgT.replace(R.id.userDetailsContainer, uListFrag, "LIST");
         fmgT.replace(R.id.chatContainer, cListFrag, "CLIST");
         fmgT.commit();

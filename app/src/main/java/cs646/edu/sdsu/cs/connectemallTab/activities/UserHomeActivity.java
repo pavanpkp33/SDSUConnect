@@ -44,6 +44,7 @@ import java.util.Date;
 import cs646.edu.sdsu.cs.connectemallTab.R;
 import cs646.edu.sdsu.cs.connectemallTab.fragments.ChatBoxFragment;
 import cs646.edu.sdsu.cs.connectemallTab.fragments.UserListFragment;
+import cs646.edu.sdsu.cs.connectemallTab.fragments.UserMapFragment;
 import cs646.edu.sdsu.cs.connectemallTab.fragments.ViewFragment;
 import cs646.edu.sdsu.cs.connectemallTab.helpers.Constants;
 import cs646.edu.sdsu.cs.connectemallTab.helpers.DataHelper;
@@ -65,6 +66,8 @@ public class UserHomeActivity extends AppCompatActivity
 
     SharedPreferences sharedPref;
     DatabaseReference dbRef, chatRef;
+
+
     DataHelper dbHelper;
     private String FILTER_URL = Constants.BASE_URL_USERS;
     @Override
@@ -195,8 +198,16 @@ public class UserHomeActivity extends AppCompatActivity
                     }
                     FragmentManager manager = getSupportFragmentManager();
                     UserListFragment fragment = (UserListFragment) manager.findFragmentByTag("LIST");
+                    System.out.println(fragment);
+                    if(fragment != null){
+                        fragment.updateView();
+                    }else{
+                        System.out.println("Loading more data "+ dataSource.size());
 
-                    fragment.updateView();
+                        UserMapFragment mapFrag = (UserMapFragment) manager.findFragmentByTag("MAP");
+                        mapFrag.getIntialData();
+                    }
+
                 }catch (JSONException e){
                     e.printStackTrace();
                 }
@@ -230,7 +241,7 @@ public class UserHomeActivity extends AppCompatActivity
         String [] params = { Integer.toString(afterId), Integer.toString(beforeId) };
         Cursor c = dbHelper.select(Constants.QUERY_GET_RANGE, params );
         if(c.moveToFirst()){
-            while(c.moveToNext()){
+            while(!c.isAfterLast()){
                 Users userObj = new Users();
                 userObj.setId(c.getInt(0));
                 userObj.setNickname(c.getString(1));
@@ -242,9 +253,16 @@ public class UserHomeActivity extends AppCompatActivity
                 userObj.setLongitude(c.getDouble(7));
 
                 dataSource.add(userObj);
+                c.moveToNext();
 
             }
         }
+        FragmentManager manager = getSupportFragmentManager();
+        UserMapFragment mapFrag = (UserMapFragment) manager.findFragmentByTag("MAP");
+        if(mapFrag != null){
+            mapFrag.getIntialData();
+        }
+
         return true;
 
     }
@@ -432,5 +450,10 @@ public class UserHomeActivity extends AppCompatActivity
 
         });
     }
+
+    public DataHelper getDbHelper() {
+        return dbHelper;
+    }
+
 
 }

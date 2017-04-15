@@ -44,6 +44,10 @@ public class DataHelper {
     public Cursor select(String Query, String [] params){
         return db.rawQuery(Query, params);
     }
+    public Cursor selectWithParams(String Query, String [] params){
+        return db.rawQuery(Query, params);
+    }
+
     private static class DBManager extends SQLiteOpenHelper{
 
 

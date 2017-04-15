@@ -1,6 +1,9 @@
 package cs646.edu.sdsu.cs.connectemallTab.fragments;
 
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -21,9 +24,11 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -31,6 +36,7 @@ import cs646.edu.sdsu.cs.connectemallTab.R;
 import cs646.edu.sdsu.cs.connectemallTab.activities.UserHomeActivity;
 import cs646.edu.sdsu.cs.connectemallTab.helpers.Constants;
 import cs646.edu.sdsu.cs.connectemallTab.helpers.VolleyHandler;
+import cs646.edu.sdsu.cs.connectemallTab.model.Users;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,13 +45,18 @@ public class FilterFragment extends Fragment implements AdapterView.OnItemSelect
 
     Button btnApply, btnClear;
     Spinner spCountry, spState;
-    String selectedCountry, selectedState;
-    int selectedCountryPos, selectedStatePos;
+    int pageSize = Constants.MIN_REC_COUNT, page = 0;
+    String selectedCountry, selectedState,URL_FILTER = Constants.BASE_URL_USERS_REVERSE, QUERY_STRING, QUERY_STRING_SCROLL;
+
+    int selectedCountryPos;
+    int selectedStatePos;
+
+    int nextId = 0;
     EditText etYear;
     UserHomeActivity parentInstance;
     ArrayList<String> countryList = new ArrayList<>(), stateList = new ArrayList<>();
     ArrayAdapter<String> countryAdapter, stateAdapter;
-
+    ContentValues insertValues;
     public FilterFragment() {
         // Required empty public constructor
     }
@@ -68,7 +79,7 @@ public class FilterFragment extends Fragment implements AdapterView.OnItemSelect
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_filter, container, false);
-
+        parentInstance.setFILTER_SET(false);
         btnApply = (Button) v.findViewById(R.id.btnApplyFilter);
         btnClear = (Button) v.findViewById(R.id.btnClearFilter);
         etYear = (EditText) v.findViewById(R.id.etFilterYear);
@@ -170,6 +181,7 @@ public class FilterFragment extends Fragment implements AdapterView.OnItemSelect
             case R.id.btnApplyFilter:
                 InputMethodManager imm = (InputMethodManager) parentInstance.getSystemService(getContext().INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                URL_FILTER = Constants.BASE_URL_USERS_REVERSE;
                 filterData();
                 break;
             case R.id.btnClearFilter:
@@ -179,6 +191,11 @@ public class FilterFragment extends Fragment implements AdapterView.OnItemSelect
 
     private void resetFilter() {
 
+        parentInstance.setFILTER_SET(false);
+        parentInstance.getNextId();
+        page = 0;
+        URL_FILTER = Constants.BASE_URL_USERS_REVERSE;
+        QUERY_STRING = "";
         etYear.setText("");
         spCountry.setSelection(0, false);
         spState.setSelection(0, false);
@@ -187,7 +204,7 @@ public class FilterFragment extends Fragment implements AdapterView.OnItemSelect
     private void filterData() {
 
         parentInstance.setFILTER_SET(true);
-        parentInstance.setFILTER_URL(buildURL());
+        getNextId();
 //        if(!spState.getSelectedItem().toString().contains("None")){
 //            setZoomLevel(selectedState+", "+selectedCountry);
 //            parentInstance.setZoomLeve(6);
@@ -196,11 +213,11 @@ public class FilterFragment extends Fragment implements AdapterView.OnItemSelect
 //            setZoomLevel(selectedCountry);
 //            parentInstance.setZoomLeve(4);
 //        }
-        FragmentManager fMg = getFragmentManager();
-        FragmentTransaction fMgt = fMg.beginTransaction();
-        UserListFragment userList = new UserListFragment();
-        fMgt.replace(R.id.userDetailsContainer, userList, "LIST");
-        fMgt.commit();
+//        FragmentManager fMg = getFragmentManager();
+//        FragmentTransaction fMgt = fMg.beginTransaction();
+//        UserListFragment userList = new UserListFragment();
+//        fMgt.replace(R.id.userDetailsContainer, userList, "LIST");
+//        fMgt.commit();
 
     }
 
@@ -235,25 +252,269 @@ public class FilterFragment extends Fragment implements AdapterView.OnItemSelect
 
     private String buildURL() {
         boolean isCountryApplied = false;
-        String URL_FILTER = Constants.BASE_URL_USERS;
+
+        URL_FILTER+= "&page="+page+"&pagesize="+pageSize+"&beforeid="+nextId;
         if(!spCountry.getSelectedItem().toString().contains("None")){
-            URL_FILTER += "?country="+selectedCountry;
+            URL_FILTER += "&country="+selectedCountry;
+            QUERY_STRING = "SELECT * FROM USERS WHERE ID < "+nextId+" AND country = '"+selectedCountry+"' ORDER BY ID DESC LIMIT 100";
+            QUERY_STRING_SCROLL = "SELECT * FROM USERS WHERE ID < ? AND country = '"+selectedCountry+"' ORDER BY ID DESC LIMIT 100";
             isCountryApplied = true;
         }
         if(!spState.getSelectedItem().toString().contains("None")){
             URL_FILTER += "&state="+selectedState;
-
+            QUERY_STRING = "SELECT * FROM USERS WHERE ID < "+nextId+" AND country = '"+selectedCountry+"' AND country = '"+selectedState+"' ORDER BY ID DESC LIMIT 100";
+            QUERY_STRING_SCROLL = "SELECT * FROM USERS WHERE ID < ? AND country = '"+selectedCountry+"' AND country = '"+selectedState+"' ORDER BY ID DESC LIMIT 100";
         }
         if(!etYear.getText().toString().equals("")){
             String filterYear = etYear.getText().toString();
+            URL_FILTER += "&year="+filterYear;
             if(isCountryApplied){
-                URL_FILTER += "&year="+filterYear;
+
+                QUERY_STRING = "SELECT * FROM USERS WHERE ID < "+nextId+" AND country = '"+filterYear+"' AND country = '"+selectedState+"" +
+                        "' AND country = "+filterYear+
+                        " ORDER BY ID DESC LIMIT 100";
+
+                QUERY_STRING_SCROLL = "SELECT * FROM USERS WHERE ID < ? AND country = '"+filterYear+"' AND country = '"+selectedState+"" +
+                        "' AND country = "+filterYear+
+                        " ORDER BY ID DESC LIMIT 100";
             }else{
-                URL_FILTER += "?year="+filterYear;
+
+                QUERY_STRING = "SELECT * FROM USERS WHERE ID < "+nextId+" AND year = "+filterYear+" ORDER BY ID DESC LIMIT 100";
+                QUERY_STRING_SCROLL = "SELECT * FROM USERS WHERE ID < ? AND year = "+filterYear+" ORDER BY ID DESC LIMIT 100";
             }
 
         }
 
         return URL_FILTER;
+    }
+
+    public void getNextId() {
+        RequestQueue requestQueueObj= VolleyHandler.getInstance().getReqQueue();
+        String url= Constants.NEXT_ID;
+
+        StringRequest jsonRequest= new StringRequest(url,new Response.Listener<String>()
+        {
+            @Override
+            public void onResponse(String response) {
+
+                nextId = Integer.parseInt(response);
+                checkLocalDbAndServer(nextId);
+            }
+
+        }, new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError error)
+
+            {
+
+
+                error.printStackTrace();
+
+            }
+        });
+        requestQueueObj.add(jsonRequest);
+
+
+    }
+
+    private void checkLocalDbAndServer(int nextId) {
+        //this only when filter button is pressed
+        buildURL();
+        parentInstance.getDataSource().clear();
+        int maxId = 0;
+        Cursor c =  parentInstance.getDbHelper().select(Constants.QUERY_ID_MAX, null);
+        if(c.moveToFirst()){
+            maxId = c.getInt(0);
+        }
+       int updateCount = (nextId-1) - maxId;
+        if(updateCount > 0){
+            //set filter flag if yes on scroll bere methods by incrementing page and downloading data
+            // illandre same methods conti nue maadi  ade 100 100
+            //Do not increment page here reset filiter flag in clear and on create view
+            getFilteredDataFromServer();
+        }else{
+           Cursor dbCursor = checkLocalDB();
+
+            if(dbCursor.getCount() == 100){
+                // put to array list
+
+                    while(dbCursor.moveToNext()){
+                        Users userObj = new Users();
+                        userObj.setId(dbCursor.getInt(0));
+                        userObj.setNickname(dbCursor.getString(1));
+                        userObj.setCountry(dbCursor.getString(2));
+                        userObj.setState(dbCursor.getString(3));
+                        userObj.setCity(dbCursor.getString(4));
+                        userObj.setYear(dbCursor.getInt(5));
+                        userObj.setLatitude(dbCursor.getDouble(6));
+                        userObj.setLongitude(dbCursor.getDouble(7));
+
+                        parentInstance.getDataSource().add(userObj);
+
+                    }
+
+                refreshFragments();
+            }else{
+                getFilteredDataFromServer();
+            }
+        }
+
+    }
+
+    private void refreshFragments() {
+        FragmentManager manager = getFragmentManager();
+        UserListFragment fragment = (UserListFragment) manager.findFragmentByTag("LIST");
+
+        if(fragment != null){
+            fragment.updateView();
+        }else{
+
+            UserMapFragment mapFrag = (UserMapFragment) manager.findFragmentByTag("MAP");
+            mapFrag.getIntialData();
+        }
+    }
+
+    public Cursor checkLocalDB(){
+
+        return parentInstance.getDbHelper().select(QUERY_STRING, null );
+    }
+
+    public void getFilteredDataFromServer() {
+
+        RequestQueue requestQueueObj= VolleyHandler.getInstance().getReqQueue();
+        String url= URL_FILTER;
+
+        JsonArrayRequest jsonRequest= new JsonArrayRequest(url,new Response.Listener<JSONArray>()
+        {
+            @Override
+            public void onResponse(JSONArray response) {
+                try{
+                    for(int i = 0; i <response.length(); i++){
+                        Users user = new Users();
+                        insertValues = new ContentValues();
+                        JSONObject jObj = response.getJSONObject(i);
+                        insertValues.put(Constants.KEY_ID, jObj.getInt("id"));
+                        insertValues.put(Constants.KEY_NICKNAME, jObj.getString("nickname"));
+                        insertValues.put(Constants.KEY_YEAR, jObj.getInt("year"));
+                        insertValues.put(Constants.KEY_COUNTRY, jObj.getString("country"));
+                        insertValues.put(Constants.KEY_STATE, jObj.getString("state"));
+                        insertValues.put(Constants.KEY_CITY, jObj.getString("city"));
+                        insertValues.put(Constants.KEY_LATITUDE, jObj.getDouble("latitude"));
+                        insertValues.put(Constants.KEY_LONGITUDE, jObj.getDouble("longitude"));
+                        insertValues.put(Constants.KEY_TIMESTAMP, jObj.getString("time-stamp"));
+                        parentInstance.getDbHelper().insert(insertValues);
+
+                        user.setId(jObj.getInt("id"));
+                        user.setNickname(jObj.getString("nickname"));
+                        user.setYear(jObj.getInt("year"));
+                        user.setCountry(jObj.getString("country"));
+                        user.setState(jObj.getString("state"));
+                        user.setCity(jObj.getString("city"));
+                        user.setLatitude(jObj.getDouble("latitude"));
+                        user.setLongitude(jObj.getDouble("longitude"));
+
+                        parentInstance.getDataSource().add(user);
+                    }
+                  refreshFragments();
+
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
+
+
+
+
+            }
+        }, new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError error)
+
+            {
+
+                error.printStackTrace();
+            }
+        });
+        requestQueueObj.add(jsonRequest);
+
+
+    }
+
+    public void setNextId(int nextId) {
+        this.nextId = nextId;
+    }
+
+    public void onScrollCheckLocalDbAndServer(int lastId) {
+           // nextId = lastId;
+            Cursor dbCursor = checkLocalDBScroll(lastId);
+
+        if(dbCursor.getCount() == 100){
+                // put to array list
+
+                    while(dbCursor.moveToNext()){
+                        Users userObj = new Users();
+                        userObj.setId(dbCursor.getInt(0));
+                        userObj.setNickname(dbCursor.getString(1));
+                        userObj.setCountry(dbCursor.getString(2));
+                        userObj.setState(dbCursor.getString(3));
+                        userObj.setCity(dbCursor.getString(4));
+                        userObj.setYear(dbCursor.getInt(5));
+                        userObj.setLatitude(dbCursor.getDouble(6));
+                        userObj.setLongitude(dbCursor.getDouble(7));
+
+                        parentInstance.getDataSource().add(userObj);
+
+                    }
+
+                refreshFragments();
+            }else{
+                page++;
+                buildURLOnScroll(lastId, page);
+                getFilteredDataFromServer();
+            }
+
+
+    }
+
+    private void buildURLOnScroll(int lastId, int pageNum) {
+
+        boolean isCountryApplied = false;
+        URL_FILTER = Constants.BASE_URL_USERS_REVERSE;
+        URL_FILTER+= "&page="+pageNum+"&pagesize="+pageSize+"&beforeid="+nextId;
+        if(!spCountry.getSelectedItem().toString().contains("None")){
+            URL_FILTER += "&country="+selectedCountry;
+
+            QUERY_STRING_SCROLL = "SELECT * FROM USERS WHERE ID < ? AND country = '"+selectedCountry+"' ORDER BY ID DESC LIMIT 100";
+            isCountryApplied = true;
+        }
+        if(!spState.getSelectedItem().toString().contains("None")){
+            URL_FILTER += "&state="+selectedState;
+
+            QUERY_STRING_SCROLL = "SELECT * FROM USERS WHERE ID < ? AND country = '"+selectedCountry+"' AND country = '"+selectedState+"' ORDER BY ID DESC LIMIT 100";
+        }
+        if(!etYear.getText().toString().equals("")){
+            String filterYear = etYear.getText().toString();
+            URL_FILTER += "&year="+filterYear;
+            if(isCountryApplied){
+
+
+                QUERY_STRING_SCROLL = "SELECT * FROM USERS WHERE ID < ? AND country = '"+filterYear+"' AND country = '"+selectedState+"" +
+                        "' AND country = "+filterYear+
+                        " ORDER BY ID DESC LIMIT 100";
+            }else{
+
+
+                QUERY_STRING_SCROLL = "SELECT * FROM USERS WHERE ID < ? AND year = "+filterYear+" ORDER BY ID DESC LIMIT 100";
+            }
+
+        }
+
+
+    }
+
+    public Cursor checkLocalDBScroll(int lastId){
+        String [] arr = {Integer.toString(lastId)};
+        return parentInstance.getDbHelper().select(QUERY_STRING_SCROLL, arr );
     }
 }
