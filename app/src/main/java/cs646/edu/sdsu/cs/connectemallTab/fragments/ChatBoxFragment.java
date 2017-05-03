@@ -103,6 +103,7 @@ public class ChatBoxFragment extends Fragment implements View.OnClickListener{
                         }
 
                         chatAdapter.notifyDataSetChanged();
+                        lvChatBox.setSelection(chatAdapter.getCount()-1);
                     }
 
                     @Override

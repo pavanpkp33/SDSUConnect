@@ -106,6 +106,7 @@ public class UserListFragment extends Fragment implements AbsListView.OnScrollLi
 
     public void updateView(){
         userAdapter.notifyDataSetChanged();
+
     }
 
 

@@ -222,7 +222,7 @@ public class FilterFragment extends Fragment implements AdapterView.OnItemSelect
     }
 
     private void filterData() {
-
+        parentInstance.displaySnack("Filtering Data.. Please wait!");
         parentInstance.setFILTER_SET(true);
 
         if(!spState.getSelectedItem().toString().contains("None")){
@@ -310,6 +310,7 @@ public class FilterFragment extends Fragment implements AdapterView.OnItemSelect
     }
 
     public void getNextId() {
+        parentInstance.displayLoading("Filtering data....");
         RequestQueue requestQueueObj= VolleyHandler.getInstance().getReqQueue();
         String url= Constants.NEXT_ID;
 
@@ -372,7 +373,7 @@ public class FilterFragment extends Fragment implements AdapterView.OnItemSelect
                         parentInstance.getDataSource().add(userObj);
 
                     }
-
+                    parentInstance.hideLoading();
                     refreshFragments();
                 }else{
                     getFilteredDataFromServer();
@@ -439,6 +440,7 @@ public class FilterFragment extends Fragment implements AdapterView.OnItemSelect
 
                         parentInstance.getDataSource().add(user);
                     }
+                    parentInstance.hideLoading();
                   refreshFragments();
 
                 }catch (JSONException e){
@@ -489,7 +491,7 @@ public class FilterFragment extends Fragment implements AdapterView.OnItemSelect
                         parentInstance.getDataSource().add(userObj);
 
                     }
-
+                parentInstance.hideLoading();
                 refreshFragments();
             }else{
                 page++;

@@ -485,4 +485,13 @@ public class UserHomeActivity extends AppCompatActivity
         Snackbar.make(findViewById(android.R.id.content), message , Snackbar.LENGTH_SHORT)
                 .show();
     }
+
+    public void displayLoading(String message){
+        progressDialog.setMessage(message);
+        progressDialog.show();
+    }
+
+    public void hideLoading(){
+        progressDialog.dismiss();
+    }
 }
